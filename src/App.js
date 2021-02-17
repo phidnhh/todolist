@@ -7,7 +7,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path='/todolist' component={ToDoList} />
+        <Route exact path='/' component={ToDoList} />
         <Route path='*' component={PageNotFound} />
       </Switch>
     </BrowserRouter>

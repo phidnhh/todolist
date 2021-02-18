@@ -9,11 +9,15 @@ const initialState = {
     ]
 }
 
-export default (state = initialState, action) => {
+const ToDoListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_TASKLIST_API: {
+        case SET_TASKLIST_API:
             state.taskList = action.taskList;
-        }; break;
+            break;
+        default:
+            break;
     }
     return { ...state };
 }
+
+export default ToDoListReducer;

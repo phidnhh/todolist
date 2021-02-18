@@ -1,15 +1,15 @@
 import React from 'react'
-import styleLoading from "./LoadingComponent.module.css";
-import loading from "../../../assets/imgLoading/loading.gif";
 import { useSelector } from 'react-redux';
+import { Spin } from 'antd';
+
 
 export default function LoadingComponent() {
-    const {isLoading} = useSelector(state => state.LoadingReducer);
+    const { isLoading } = useSelector(state => state.LoadingReducer);
     if(isLoading) {
         return (
-            <div className={styleLoading.bgLoading}>
-                <img src={loading} />
-            </div>
+          <div className="todolist-loading">
+            <Spin tip="Đang tải dữ liệu..." size="large"/>
+          </div>
         )
     } else {
         return "";

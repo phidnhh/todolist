@@ -5,8 +5,8 @@ import { ToDoListPrimaryTheme } from "./ToDoListPrimaryTheme";
 export const arrTheme = [
     {
         id: 1,
-        name: "Light theme",
-        theme: ToDoListLightTheme
+        name: "Primary theme",
+        theme: ToDoListPrimaryTheme
     },
     {
         id: 2,
@@ -15,7 +15,7 @@ export const arrTheme = [
     },
     {
         id: 3,
-        name: "Primary theme",
-        theme: ToDoListPrimaryTheme
+        name: "Light theme",
+        theme: ToDoListLightTheme
     }
 ];

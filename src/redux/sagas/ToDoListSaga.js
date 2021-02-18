@@ -7,10 +7,10 @@ import { ADD_TASK_API, DELETE_TASK_API, DONE_TASK_API, GET_TASKLIST_API, REJECT_
 function* getTaskListApiAction(action) {
     yield put({
         type: DISPLAY_LOADING
-    })
+    });
+    yield delay(200);
     try {
         let { data, status } = yield call(toDoListService.getTaskApi);
-        yield delay(200);
 
         if (status === STATUS_CODE.SUCCESS) {
             // sau khi lấy kết quả thành công dùng put (giống dispatch thunk)
@@ -39,7 +39,7 @@ function* addTaskListApiAction(action) {
     })
     try {
         let { newTask } = action;  
-        let { data, status } = yield call(() => {
+        let { status } = yield call(() => {
             return toDoListService.addTaskApi(newTask);
         });
 
@@ -48,6 +48,8 @@ function* addTaskListApiAction(action) {
             yield put({
                 type: GET_TASKLIST_API
             });
+
+            document.getElementById("textfield-taskName").value = "";
         } else {
             console.log("error");
         }
@@ -70,7 +72,7 @@ function* deleteTaskListApiAction(action) {
     })
     try {
         let { taskName } = action;  
-        let { data, status } = yield call(() => {
+        let { status } = yield call(() => {
             return toDoListService.deleteTaskApi(taskName);
         });
 
@@ -101,7 +103,7 @@ function* doneTaskListApiAction(action) {
     })
     try {
         let { taskName } = action;  
-        let { data, status } = yield call(() => {
+        let { status } = yield call(() => {
             return toDoListService.doneTaskApi(taskName);
         });
 
@@ -132,7 +134,7 @@ function* rejectTaskListApiAction(action) {
     })
     try {
         let { taskName } = action;  
-        let { data, status } = yield call(() => {
+        let { status } = yield call(() => {
             return toDoListService.rejectTaskApi(taskName);
         });
 

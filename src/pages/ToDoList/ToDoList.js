@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { arrTheme } from '../../components/StyledComponent/Theme/ToDoList/ThemeManager'
-import { ToDoListLightTheme } from '../../components/StyledComponent/Theme/ToDoList/ToDoListLightTheme'
+import { ToDoListPrimaryTheme } from '../../components/StyledComponent/Theme/ToDoList/ToDoListPrimaryTheme'
 
 import { Container } from '../../components/StyledComponent/Component/ToDoList/Container'
 import { Dropdown } from '../../components/StyledComponent/Component/ToDoList/Dropdown'
@@ -11,15 +11,12 @@ import { Button } from '../../components/StyledComponent/Component/ToDoList/Butt
 import { Table, Thead, Tr, Th } from '../../components/StyledComponent/Component/ToDoList/Table'
 import { useDispatch, useSelector } from 'react-redux'
 import { ADD_TASK_API, DELETE_TASK_API, DONE_TASK_API, GET_TASKLIST_API, REJECT_TASK_API } from '../../redux/constants/ToDoListConst'
-import LoadingComponent from '../../components/GlobalSetting/LoadingComponent/LoadingComponent'
 import { DISPLAY_LOADING, HIDE_LOADING } from '../../redux/constants/LoadingConst'
-import bgToDoList from '../../assets/ToDoList/bgToDoList.jpg'
-
 
 export default function ToDoList() {
     const taskList = useSelector(state => state.ToDoListReducer.taskList);
     const [state, setState] = useState({
-        theme: ToDoListLightTheme,
+        theme: ToDoListPrimaryTheme,
         values: {
             newTask: ""
         },
@@ -29,11 +26,6 @@ export default function ToDoList() {
     });
 
     const dispatch = useDispatch();
-    const getTaskList = () => {
-        dispatch({
-            type: GET_TASKLIST_API
-        })
-    }
 
     const doneTask = (taskName) => {
         dispatch({
@@ -54,7 +46,7 @@ export default function ToDoList() {
         dispatch({
             type: ADD_TASK_API,
             newTask: state.values.newTask
-        })
+        });
     }
 
     const rejectTask = (taskName) => {
@@ -64,11 +56,14 @@ export default function ToDoList() {
         })
     }
 
+    const getTaskList = () => {
+        dispatch({
+            type: GET_TASKLIST_API
+        })
+    }
+
     useEffect(() => {
         getTaskList();
-        return () => {
-
-        }
     }, []);
 
     const handleChangeNewTask = (e) => {
@@ -115,6 +110,7 @@ export default function ToDoList() {
                     </Th>
                 </Tr>
             }
+            return "";
         })
     }
 
@@ -133,45 +129,34 @@ export default function ToDoList() {
                     </Th>
                 </Tr>
             }
+            return "";
         })
     }
 
-    // const style={
-    //     height: "auto",
-    //     margin: 0,
-    //     padding: 0,
-    //     minHeight: "100%",
-    //     position: "fixed",
-    //     width: "100%",
-    //     zIndex: -1,
-    //     background: `url('${bgToDoList}')`,
-    //     backgroundSize:"cover"
-    // }
-
-    const style={
-        background: `url('${bgToDoList}')`,
-        backgroundSize:"cover",
-        padding: "20px 0"
-    }
-
     return (
-        <div style={style}>
+        <div className="todolist-content">
             <ThemeProvider theme={state.theme}>
-                <LoadingComponent />
-                <Container className="w-50">
-                    <Heading3>TodoList</Heading3>
-                    <Dropdown onChange={(event) => {
+                <Container className="container">
+                    <Heading3>Awesome TodoList</Heading3>
+                    <Dropdown id="todolist-dropdown" onChange={(event) => {
                         let value = event.target.value;
                         let newTheme = arrTheme.find(item => item.id == value);
                         if (newTheme !== -1) {
                             dispatch({
                                 type: DISPLAY_LOADING
                             })
-                                                   
                             setState({
                                 ...state,
                                 theme: newTheme.theme
                             });
+
+                            // change color left table content
+                            let myTable = document.getElementsByClassName("my-table")[0];
+                            myTable.setAttribute("style",`color: ${newTheme.theme.color}`);
+                            myTable.getElementsByTagName("a")[0].setAttribute("style",`color: ${newTheme.theme.color}`);
+                            myTable.getElementsByTagName("a")[1].setAttribute("style",`color: ${newTheme.theme.color}`);
+                            document.getElementsByClassName("bottom-description")[0].setAttribute("style",`color: ${newTheme.theme.color}`);
+
                             setTimeout(function(){
                                 dispatch({
                                     type: HIDE_LOADING
@@ -182,7 +167,7 @@ export default function ToDoList() {
                     }} className="mb-3">
                         {renderTheme()}
                     </Dropdown>
-                    <TextField onChange={handleChangeNewTask} label="Enter an activity..." name="taskName" style={{ width: 300 }} ></TextField>
+                    <TextField onChange={handleChangeNewTask} label="Enter an activity..." name="taskName" id="textfield-taskName" style={{ width: 300 }} ></TextField>
                     <Button onClick={() => {
                         addTask()
                     }} className="ml-2"><i className="fa fa-plus"></i> Add task</Button>
